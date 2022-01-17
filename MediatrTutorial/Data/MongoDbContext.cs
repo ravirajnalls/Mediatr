@@ -11,7 +11,9 @@ namespace MediatrTutorial.Data
     public interface IMongoDbContext
     {
         Task<BaseModelMetaData> Create(BaseModelMetaData data);
-        // Task<IList<BaseModelMetaData>> Read();
+        Task<IList<BaseModelMetaData>> ListAll();
+        Task<List<BaseModelMetaData>> FindAllVersionsByModelMetaDataId(Guid modelMetaDataId);
+        Task Update(BaseModelMetaData data);
         //Task<BaseModelMetaData> Find(string id);
         //Task Update(BaseModelMetaData data);
         //Task Delete(string id);
@@ -35,14 +37,18 @@ namespace MediatrTutorial.Data
             return data;
         }
 
-        //public async Task<IList<BaseModelMetaData>> Read() =>
-        //    (await _models.FindAsync(model => true)).ToList();
+        public async Task<IList<BaseModelMetaData>> ListAll() =>
+            (await _models.FindAsync(model => true)).ToList();
 
-        //public async Task<BaseModelMetaData> Find(string id) =>
-        //   (await _models.FindAsync(model => model.Id == id)).SingleOrDefault();
+        public async Task<List<BaseModelMetaData>> FindAllVersionsByModelMetaDataId(Guid modelMetaDataId)
+        {
+            return (await _models.FindAsync(model => model.ModelMetaDataId == modelMetaDataId)).ToList();
+        }
 
-        //public async Task Update(BaseModelMetaData data) =>
-        //    await _models.ReplaceOneAsync(model => model.Id == data.Id, data);
+        public async Task Update(BaseModelMetaData data)
+        {
+            await _models.ReplaceOneAsync(model => model.Id == data.Id, data);
+        }
 
         //public async Task Delete(string id) =>
         //   await _models.DeleteOneAsync(model => model.Id == id);

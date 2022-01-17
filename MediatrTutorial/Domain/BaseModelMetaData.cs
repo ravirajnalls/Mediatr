@@ -8,86 +8,131 @@ using System.Threading.Tasks;
 
 namespace MediatrTutorial.Domain
 {
-    public class BaseModelMetaData 
+    public class BaseModelMetaData
     {
         [BsonId]
         public ObjectId Id { get; set; }
+        [BsonElement("modelmetadataid")]
+        public Guid ModelMetaDataId { get; set; }
+        [BsonElement("name")]
+        public string Name { get; set; }
+        [BsonElement("project")]
+        public string Project { get; set; }
+        [BsonElement("version")]
+        public int Version { get; set; }
+        [BsonElement("active")]
+        public bool Active { get; set; }
+        [BsonElement("exec_mode")]
+        public string Exec_mode { get; set; }
+        [BsonElement("exec_env")]
+        public string Exec_env { get; set; }
+        [BsonElement("created_by")]
+        public string Created_by { get; set; }
+        [BsonElement("date_created")]
+        public DateTime Date_created { get; set; }
+        [BsonElement("last_modified_by")]
+        public string Last_modified_by { get; set; }
+        [BsonElement("date_modified")]
+        public DateTime? Date_modified { get; set; }
+        [BsonElement("input")]
+        public Input Input { get; set; }
+        [BsonElement("output")]
+        public Output Output { get; set; }
+        [BsonElement("exec_mode_batch")]
+        public ExecutionModeBatch Exec_mode_batch { get; set; }
+        [BsonElement("exec_mode_realtime")]
+        public ExecutionModeRealtime Exec_mode_realtime { get; set; }
+        [BsonElement("training")]
+        public Training Training { get; set; }
+        [BsonElement("parameters")]
+        public Dictionary<string, string> Parameters { get; set; }
+        [BsonElement("hyperparameters")]
+        public Dictionary<string, string> HyperParameters { get; set; }       
+        [BsonElement("tags")]
+        public Tags Tags { get; set; }
+        [BsonElement("isDeleted")]
+        public Tags isDeleted { get; set; }
+    }
+
+    public class Input
+    {
+        [BsonElement("data")]
+        public Data Data { get; set; }
+        [BsonElement("artifact")]
+        public Artifact Artifact { get; set; }
+    }
+
+    public class Output
+    {
+        [BsonElement("data")]
+        public Data Data { get; set; }
+        [BsonElement("artifact")]
+        public Artifact Artifact { get; set; }
+    }
+
+    public class ExecutionModeBatch
+    {
+        [BsonElement("frequency")]
+        public string Frequency { get; set; }
+        [BsonElement("cron_schedule")]
+        public string Cron_schedule { get; set; }
+        [BsonElement("temporality")]
+        public string Temporality { get; set; }
+        [BsonElement("notebook_path")]
+        public string Notebook_path { get; set; }
+        [BsonElement("cluster_details")]
+        public ClusterDetails Cluster_details { get; set; }
+    }
+
+    public class ClusterDetails
+    {
+        [BsonElement("workload_profile_id")]
+        public string Workload_profile_id { get; set; }
+        [BsonElement("context")]
+        public Dictionary<string, string> Context { get; set; }
+    }
+
+    public class ExecutionModeRealtime
+    {
+        [BsonElement("context")]
+        public Dictionary<string, string> Context { get; set; }
+    }
+
+    public class Training
+    {
+        [BsonElement("experiment")]
+        public string Experiment { get; set; }
         [BsonElement("experimentId")]
         public string ExperimentId { get; set; }
-        public string ProjectId { get; set; }
-        public string Name { get; set; }
-        public int Version { get; set; }
-        public string Etag { get; set; }
-        public string Frequency { get; set; }
-        public string Created { get; set; }
-        public string ModifiedOn { get; set; }
-        public string Owner { get; set; }
-        [BsonElement("tags")]
-        public string Tags { get; set; }
-        public string NotebookRef { get; set; }
-        public string ExecutionId { get; set; }
-        public Model Model { get; set; }
-        public Study Study { get; set; }
-        public Entity Entity { get; set; }
-        public Parameters Parameters { get; set; }
-        public Inputs Inputs { get; set; }
-        // public Hyperparameters Hyperparameters { get; set; }
-        public Metrics Metrics { get; set; }
-        public string Results_Table { get; set; }
-        public string Study_Completed { get; set; }
-        public string Temporality { get; set; }
+        [BsonElement("metrics")]
+        public Dictionary<string, string> Metrics { get; set; }
     }
 
-    public class Model
+    public class Tags
     {
-        public string ModelType { get; set; }
+        [BsonElement("icto")]
+        public string Icto { get; set; }
+        [BsonElement("environment")]
+        public string Environment { get; set; }
+        [BsonElement("additionaltags")]
+        public Dictionary<string, string> AdditionalTags { get; set; }
     }
 
-    public class Study
+    public class Data
     {
-        public string Study_Id { get; set; }
-        public int Study_Version { get; set; }
-        public string Study_Name { get; set; }
-        public string Study_Description { get; set; }
-        public string Study_Notebook { get; set; }
-        public string Study_Status { get; set; }
-        public string Study_Initiated { get; set; }
+        [BsonElement("table_type")]
+        public string Table_type { get; set; }
+        [BsonElement("table")]
+        public string Table { get; set; }
+        [BsonElement("context")]
+        public Dictionary<string, string> Context { get; set; }
     }
 
-    public class Entity
+    public class Artifact
     {
-        public string Entity_Type { get; set; }
-        public string Entity_Universe { get; set; }
-    }
-
-    public class Parameters
-    {
-        public string Entities { get; set; }
-        public string Tickers { get; set; }
-        public string Chain_ids { get; set; }
-        public string Percentile { get; set; }
-        public string Outlier_Detection_Methodology { get; set; }
-        public string Distance_Feature_Vector { get; set; }
-        public string Month_Over_Month_Feature_Vector { get; set; }
-    }
-
-    public class Inputs
-    {
-        public string Input_Table { get; set; }
-        public string Date_Column { get; set; }
-        public string Value_Column { get; set; }
-        public string Ts_Id_Column { get; set; }
-    }
-
-    public class Hyperparameters
-    {
-    }
-
-    public class Metrics
-    {
-        public string Sandbytes_Practice { get; set; }
-        public string Plan_Id { get; set; }
-        public string Plan_Revision { get; set; }
-        public string Plan_Description { get; set; }
+        [BsonElement("flavor")]
+        public string Flavor { get; set; }
+        [BsonElement("path")]
+        public string Path { get; set; }
     }
 }

@@ -14,81 +14,80 @@ namespace MediatrTutorial.Features.ModelMetaData.Commands
     public class Create
     {
         public class ModelMetaDataCommand : IRequest<string>
-        {           
-            public string ProjectId { get; set; }
+        {
+            public Guid? ModelMetaDataId { get; set; }
             public string Name { get; set; }
-            public int Version { get; set; }
-            public string Etag { get; set; }
+            public string Project { get; set; }
+            public bool Active { get; set; }
+            public string Exec_mode { get; set; }
+            public string Exec_env { get; set; }
+            public Input Input { get; set; }
+            public Output Output { get; set; }
+            public ExecutionModeBatch Exec_mode_batch { get; set; }
+            public ExecutionModeRealtime Exec_mode_realtime { get; set; }
+            public Training Training { get; set; }
+            public Dictionary<string, string> Parameters { get; set; }
+            public Dictionary<string, string> HyperParameters { get; set; }
+            public Tags Tags { get; set; }
+        }
+
+        public class Input
+        {
+            public Data Data { get; set; }
+            public Artifact Artifact { get; set; }
+        }
+
+        public class Output
+        {
+            public Data Data { get; set; }
+            public Artifact Artifact { get; set; }
+        }
+
+        public class ExecutionModeBatch
+        {
             public string Frequency { get; set; }
-            public string Created { get; set; }
-            public string ModifiedOn { get; set; }
-            public string Owner { get; set; }
-            public string Tags { get; set; }
-            public string NotebookRef { get; set; }
-            public string ExecutionId { get; set; }
-            public Model Model { get; set; }
-            public Study Study { get; set; }
-            public Entity Entity { get; set; }
-            public Parameters Parameters { get; set; }
-            public Inputs Inputs { get; set; }
-            public Hyperparameters Hyperparameters { get; set; }
-            public Metrics Metrics { get; set; }
-            public string Results_Table { get; set; }
-            public string Study_Completed { get; set; }
+            public string Cron_schedule { get; set; }
             public string Temporality { get; set; }
+            public string Notebook_path { get; set; }
+            public ClusterDetails Cluster_details { get; set; }
         }
 
-        public class Model
+        public class ClusterDetails
         {
-            public string ModelType { get; set; }
+            public string Workload_profile_id { get; set; }
+            public Dictionary<string, string> Context { get; set; }
         }
 
-        public class Study
+        public class ExecutionModeRealtime
         {
-            public string Study_Id { get; set; }
-            public int Study_Version { get; set; }
-            public string Study_Name { get; set; }
-            public string Study_Description { get; set; }
-            public string Study_Notebook { get; set; }
-            public string Study_Status { get; set; }
-            public string Study_Initiated { get; set; }
+            public Dictionary<string, string> Context { get; set; }
         }
 
-        public class Entity
+        public class Training
         {
-            public string Entity_Type { get; set; }
-            public string Entity_Universe { get; set; }
+            public string Experiment { get; set; }
+            public string ExperimentId { get; set; }
+            public Dictionary<string, string> Metrics { get; set; }
         }
 
-        public class Parameters
+        public class Tags
         {
-            public string Entities { get; set; }
-            public string Tickers { get; set; }
-            public string Chain_ids { get; set; }
-            public string Percentile { get; set; }
-            public string Outlier_Detection_Methodology { get; set; }
-            public string Distance_Feature_Vector { get; set; }
-            public string Month_Over_Month_Feature_Vector { get; set; }
+            public string Icto { get; set; }
+            public string Environment { get; set; }
+            public Dictionary<string, string> AdditionalTags { get; set; }
         }
 
-        public class Inputs
+        public class Data
         {
-            public string Input_Table { get; set; }
-            public string Date_Column { get; set; }
-            public string Value_Column { get; set; }
-            public string Ts_Id_Column { get; set; }
+            public string Table_type { get; set; }
+            public string Table { get; set; }
+            public Dictionary<string, string> Context { get; set; }
         }
 
-        public class Hyperparameters
+        public class Artifact
         {
-        }
-
-        public class Metrics
-        {
-            public string Sandbytes_Practice { get; set; }
-            public string Plan_Id { get; set; }
-            public string Plan_Revision { get; set; }
-            public string Plan_Description { get; set; }
+            public string Flavor { get; set; }
+            public string Path { get; set; }
         }
 
         public class Validator : AbstractValidator<ModelMetaDataCommand>
@@ -103,13 +102,15 @@ namespace MediatrTutorial.Features.ModelMetaData.Commands
             public MappingProfile()
             {
                 CreateMap<ModelMetaDataCommand, BaseModelMetaData>();
-                CreateMap<MediatrTutorial.Features.ModelMetaData.Commands.Create.Model, MediatrTutorial.Domain.Model>();
-                CreateMap<MediatrTutorial.Features.ModelMetaData.Commands.Create.Study, MediatrTutorial.Domain.Study>();
-                CreateMap<MediatrTutorial.Features.ModelMetaData.Commands.Create.Entity, MediatrTutorial.Domain.Entity>();
-                CreateMap<MediatrTutorial.Features.ModelMetaData.Commands.Create.Parameters, MediatrTutorial.Domain.Parameters>();
-                CreateMap<MediatrTutorial.Features.ModelMetaData.Commands.Create.Inputs, MediatrTutorial.Domain.Inputs>();
-                CreateMap<MediatrTutorial.Features.ModelMetaData.Commands.Create.Metrics, MediatrTutorial.Domain.Metrics>();
-                CreateMap<MediatrTutorial.Features.ModelMetaData.Commands.Create.Hyperparameters, MediatrTutorial.Domain.Hyperparameters>();
+                CreateMap<MediatrTutorial.Features.ModelMetaData.Commands.Create.Input, MediatrTutorial.Domain.Input>();
+                CreateMap<MediatrTutorial.Features.ModelMetaData.Commands.Create.Output, MediatrTutorial.Domain.Output>();
+                CreateMap<MediatrTutorial.Features.ModelMetaData.Commands.Create.ExecutionModeBatch, MediatrTutorial.Domain.ExecutionModeBatch>();
+                CreateMap<MediatrTutorial.Features.ModelMetaData.Commands.Create.ExecutionModeRealtime, MediatrTutorial.Domain.ExecutionModeRealtime>();
+                CreateMap<MediatrTutorial.Features.ModelMetaData.Commands.Create.Training, MediatrTutorial.Domain.Training>();
+                CreateMap<MediatrTutorial.Features.ModelMetaData.Commands.Create.ClusterDetails, MediatrTutorial.Domain.ClusterDetails>();
+                CreateMap<MediatrTutorial.Features.ModelMetaData.Commands.Create.Tags, MediatrTutorial.Domain.Tags>();
+                CreateMap<MediatrTutorial.Features.ModelMetaData.Commands.Create.Data, MediatrTutorial.Domain.Data>();
+                CreateMap<MediatrTutorial.Features.ModelMetaData.Commands.Create.Artifact, MediatrTutorial.Domain.Artifact>();
             }
         }
 
@@ -126,9 +127,44 @@ namespace MediatrTutorial.Features.ModelMetaData.Commands
             public async Task<string> Handle(ModelMetaDataCommand request, CancellationToken cancellationToken)
             {
                 var data = mapper.Map<BaseModelMetaData>(request);
-                data.ExperimentId = Guid.NewGuid().ToString();
+                return request.ModelMetaDataId.HasValue ? await CreateNewModelMetadataVersion(request, data) : await CreateNewModelMetadata(request, data);
+            }
+
+            private async Task<string> CreateNewModelMetadata(ModelMetaDataCommand request, BaseModelMetaData data)
+            {
+                data.ModelMetaDataId = Guid.NewGuid();
+                data.Version = 1;
+                SetDefaultValues(data);
                 await mongoDbContext.Create(data);
-                return data.ProjectId;
+                return data.Id.ToString();
+            }
+
+            private async Task<string> CreateNewModelMetadataVersion(ModelMetaDataCommand request, BaseModelMetaData data)
+            {
+                var allModelMetadataVersions = (await this.mongoDbContext.FindAllVersionsByModelMetaDataId(request.ModelMetaDataId.Value));
+                if (data.Active)
+                {
+                    var activeModel = allModelMetadataVersions.Where(m => m.Active == true).FirstOrDefault();
+                    activeModel.Active = false;
+                    await this.mongoDbContext.Update(activeModel);
+                }
+                SetVersion(request, data, allModelMetadataVersions);
+                SetDefaultValues(data);
+                await mongoDbContext.Create(data);
+                return data.Id.ToString();
+            }
+
+            private void SetVersion(ModelMetaDataCommand request, BaseModelMetaData data, List<BaseModelMetaData> allModelMetadataVersions)
+            {
+                var latestModel = allModelMetadataVersions.OrderByDescending(m => m.Version).FirstOrDefault();
+                data.Version = latestModel.Version++;
+            }
+
+            private void SetDefaultValues(BaseModelMetaData data)
+            {
+                data.Created_by = "testuser"; // TODO: update user
+                data.Date_created = DateTime.UtcNow;
+                data.Date_modified = null;
             }
         }
     }
