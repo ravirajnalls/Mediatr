@@ -12,7 +12,7 @@ namespace MediatrTutorial.Data
     {
         Task<BaseModelMetaData> Create(BaseModelMetaData data);
         Task<IList<BaseModelMetaData>> ListAll();
-        Task<List<BaseModelMetaData>> FindAllVersionsByModelMetaDataId(Guid modelMetaDataId);
+        Task<List<BaseModelMetaData>> FindAllVersionsByModelMetaDataId(string modelMetaDataId);
         Task Update(BaseModelMetaData data);
         //Task<BaseModelMetaData> Find(string id);
         //Task Update(BaseModelMetaData data);
@@ -40,7 +40,7 @@ namespace MediatrTutorial.Data
         public async Task<IList<BaseModelMetaData>> ListAll() =>
             (await _models.FindAsync(model => true)).ToList();
 
-        public async Task<List<BaseModelMetaData>> FindAllVersionsByModelMetaDataId(Guid modelMetaDataId)
+        public async Task<List<BaseModelMetaData>> FindAllVersionsByModelMetaDataId(string modelMetaDataId)
         {
             return (await _models.FindAsync(model => model.ModelMetaDataId == modelMetaDataId)).ToList();
         }

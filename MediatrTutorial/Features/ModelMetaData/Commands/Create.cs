@@ -15,7 +15,7 @@ namespace MediatrTutorial.Features.ModelMetaData.Commands
     {
         public class ModelMetaDataCommand : IRequest<string>
         {
-            public Guid? ModelMetaDataId { get; set; }
+            public string ModelMetaDataId { get; set; }
             public string Name { get; set; }
             public string Project { get; set; }
             public bool Active { get; set; }
@@ -127,12 +127,12 @@ namespace MediatrTutorial.Features.ModelMetaData.Commands
             public async Task<string> Handle(ModelMetaDataCommand request, CancellationToken cancellationToken)
             {
                 var data = mapper.Map<BaseModelMetaData>(request);
-                return request.ModelMetaDataId.HasValue ? await CreateNewModelMetadataVersion(request, data) : await CreateNewModelMetadata(request, data);
+                return !(string.IsNullOrEmpty(request.ModelMetaDataId)) ? await CreateNewModelMetadataVersion(request, data) : await CreateNewModelMetadata(request, data);
             }
 
             private async Task<string> CreateNewModelMetadata(ModelMetaDataCommand request, BaseModelMetaData data)
             {
-                data.ModelMetaDataId = Guid.NewGuid();
+                data.ModelMetaDataId = Guid.NewGuid().ToString();
                 data.Version = 1;
                 SetDefaultValues(data);
                 await mongoDbContext.Create(data);
@@ -141,7 +141,7 @@ namespace MediatrTutorial.Features.ModelMetaData.Commands
 
             private async Task<string> CreateNewModelMetadataVersion(ModelMetaDataCommand request, BaseModelMetaData data)
             {
-                var allModelMetadataVersions = (await this.mongoDbContext.FindAllVersionsByModelMetaDataId(request.ModelMetaDataId.Value));
+                var allModelMetadataVersions = (await this.mongoDbContext.FindAllVersionsByModelMetaDataId(request.ModelMetaDataId));
                 if (data.Active)
                 {
                     var activeModel = allModelMetadataVersions.Where(m => m.Active == true).FirstOrDefault();

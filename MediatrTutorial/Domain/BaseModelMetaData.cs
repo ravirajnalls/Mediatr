@@ -13,7 +13,7 @@ namespace MediatrTutorial.Domain
         [BsonId]
         public ObjectId Id { get; set; }
         [BsonElement("modelmetadataid")]
-        public Guid ModelMetaDataId { get; set; }
+        public string ModelMetaDataId { get; set; }
         [BsonElement("name")]
         public string Name { get; set; }
         [BsonElement("project")]
